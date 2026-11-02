@@ -1,40 +1,31 @@
 # Python Multi-Threaded TCP Port Scanner
 
-A TCP port scanner built in Python to identify open ports on a target host. The script uses socket programming and multithreading to perform TCP connection attempts across ports 1–65,535.
+A Python TCP port scanner that uses `socket` and `threading` to check ports 1–65,535 on a target host.
 
 ## How It Works
-1. The script initializes a global list to store discovered open ports and accepts an IPv4 address or hostname that resolves to an IPv4 address as a command-line argument.
-2. It resolves the target into an IPv4 address using Python's `socket.gethostbyname()` and prints the scan initialization details (target IP and start timestamp) to the terminal.
-3. Using Python's `threading` library, it attempts to start a separate thread for each port in the range 1–65,535, allowing multiple TCP connection attempts to run concurrently.
-4. Each thread attempts to establish a TCP connection to its assigned port, using a one-second connection timeout. If the connection succeeds (`connect_ex` returns `0`), the port is printed to the terminal in real time and added to the results list. Unsuccessful connection attempts and exceptions are ignored.
-5. Once all threads have finished, the script checks whether any open ports were discovered.
-6. If open ports are found, a `.txt` report is generated containing the target IP address, completion timestamp, and a numerically sorted list of discovered open ports.
+1. Takes a target IPv4 address or hostname as a command-line argument and resolves it via `socket.gethostbyname()`.
+2. Spawns a separate thread for each port (1–65,535) to run TCP connection attempts concurrently.
+3. Each thread tries to connect with a 1-second timeout. Open ports (`connect_ex == 0`) are printed to the terminal in real time and saved to a global list. Closed ports and errors are silently ignored.
+4. Once all threads finish, if any open ports were found, the script writes a sorted summary to a `.txt` file.
 
-**Note:** This is a TCP connect scanner. It does not perform SYN scanning or distinguish between closed, filtered, and unreachable ports.
-
-**Implementation Note:** This implementation attempts to create up to 65,535 threads, so system resource limitations may prevent the scan from completing successfully.
+* **Note:** This is a full TCP connect scanner. It does not do SYN scans or distinguish between closed, filtered, or unreachable ports.
+* **Limitation:** Because it attempts to spawn 65,535 threads at once, you may hit OS thread or file-descriptor limits before the scan finishes.
 
 ## Usage
-Run the script from your terminal by providing a target IP address or hostname:
 `python scanner.py <target>`
 
-**Example:**
-`python scanner.py 192.168.1.10`
+**Examples:**
+* Scan a specific lab target: `python scanner.py 192.168.1.10`
+* Scan your own machine: `python scanner.py 127.0.0.1`
 
-To scan your own machine, you can use the loopback address:
-`python scanner.py 127.0.0.1`
-
-*(On Windows, you can use `ipconfig` in Command Prompt to view your machine's local IPv4 address. Note: The IP address obtained through `ipconfig` belongs to your own machine, not necessarily the system you intend to scan. For lab environments, use the IP address of the target machine).*
+*(Tip: Running `ipconfig` on Windows shows your own local IP, not your target's. Make sure you use the target machine's IP in lab environments.)*
 
 ## Output
-During execution, the script prints the scan start time and displays any open ports in the terminal as they are discovered.
+Open ports print to the terminal as they are found. If at least one open port is discovered, the script saves a report named `scan_<target_ip>.txt` containing the target IP, completion timestamp, and numerically sorted list of open ports.
 
-If one or more open ports are discovered, the script also automatically generates a text report upon completion named: `scan_<target_ip>.txt`
-
-The report contains the target IP address, the scan completion timestamp, and the numerically sorted list of discovered open ports. 
-**Note:** Existing reports with the same filename will be overwritten. If no open ports are discovered (or if the scan is interrupted with `Ctrl+C`), no report is generated.
+*(Existing reports with the same name are overwritten. If no open ports are found, no file is created.)*
 
 ## Acknowledgments
-This script was developed as a lab project while following TCM Security's Programming 100: Fundamentals course. I'm sharing it to document my cybersecurity learning journey and hands-on practice with Python networking.
+Built as a lab project during TCM Security's *Programming 100: Fundamentals* course to practice Python networking.
 
-**Disclaimer:** This tool was developed strictly for educational purposes and authorized lab testing. Only scan systems you own or have explicit permission to test.
+**Disclaimer:** For educational and authorized lab testing only. Only scan systems you own or have permission to test.

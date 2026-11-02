@@ -1,6 +1,6 @@
 # Python Multi-Threaded TCP Port Scanner
 
-A basic TCP port scanner built in Python to identify open ports on a target host. The script uses socket programming and multithreading to perform TCP connection attempts across ports 1–65,535.
+A TCP port scanner built in Python to identify open ports on a target host. The script uses socket programming and multithreading to perform TCP connection attempts across ports 1–65,535.
 
 ## How It Works
 

@@ -12,9 +12,9 @@ A fast TCP port scanner built in Python to identify open ports on a target host.
 
 ## Usage
 
-1: Find your local IP address to use as a target. On Windows, open Command Prompt and type: ipconfig, Look for the line that says "IPv4 Address". 
+1. Find your local IP address to use as a target. On Windows, open Command Prompt and type: ipconfig, Look for the line that says "IPv4 Address". 
 
-2: Run the scanner from your terminal by typing python followed by the script name and your target IP. 
+2. Run the scanner from your terminal by typing python followed by the script name and your target IP. 
 Example: python scanner.py <target_ip>
 
 ## Acknowledgments

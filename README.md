@@ -1,4 +1,4 @@
-# Python Multi-Threaded TCP Port Scanner
+# Python TCP Port Scanner
 
 A Python TCP port scanner that uses `socket` and `threading` to check ports 1–65,535 on a target host.
 

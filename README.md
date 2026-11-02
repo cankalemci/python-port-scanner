@@ -7,14 +7,14 @@ A TCP port scanner built in Python to identify open ports on a target host. The 
 1. The script accepts an IPv4 address or hostname that resolves to an IPv4 address as a command-line argument.
 2. It resolves the provided hostname into an IPv4 address using Python's `socket.gethostbyname()`.
 3. It initializes an empty list to store discovered open ports.
-4. Using Python's `threading` library, it starts a separate thread for each port in the range 1–65,535, allowing multiple TCP connection attempts to run concurrently.
+4. Using Python's `threading` library, it attempts to start a separate thread for each port in the range 1–65,535, allowing multiple TCP connection attempts to run concurrently.
 5. Each thread attempts to establish a TCP connection to its assigned port, using a one-second connection timeout. If the connection succeeds, the port is identified as open and added to the results list. Unsuccessful connection attempts are ignored.
 6. Once all threads have finished, the script checks whether any open ports were discovered.
 7. If open ports are found, a `.txt` report is generated containing the target IP address, completion timestamp, and numerically sorted list of discovered open ports.
 
 *Note: This is a TCP connect scanner. It does not perform SYN scanning or distinguish between closed, filtered, and unreachable ports.*
 
-*Implementation Note: This implementation creates 65,535 threads, so system resource limitations may affect whether the scan completes successfully.*
+*Implementation Note: This implementation attempts to create up to 65,535 threads, so system resource limitations may prevent the scan from completing successfully.*
 
 ## Usage
 
